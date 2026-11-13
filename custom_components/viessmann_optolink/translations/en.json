@@ -1,0 +1,306 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "Choose the Optolink adapter or enter its full path under /dev/serial/by-id/ or /dev/serial/by-path/. Setup reads the controller identity.",
+        "data": {
+          "port": "Optolink serial port"
+        }
+      },
+      "reconfigure": {
+        "description": "Choose the Optolink adapter or enter its full path under /dev/serial/by-id/ or /dev/serial/by-path/. Setup reads the controller identity.",
+        "data": {
+          "port": "Optolink serial port"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "No KW response. Check the adapter path, optical alignment and port availability.",
+      "unsupported_controller": "This controller needs a different register map. The supported signature is 20 91 00 01.",
+      "invalid_port": "Enter a full device path under /dev/serial/by-id/ or /dev/serial/by-path/."
+    },
+    "abort": {
+      "already_configured": "This adapter is already configured.",
+      "single_instance_allowed": "This integration already has a configured controller.",
+      "reconfigure_successful": "The adapter port was updated."
+    }
+  },
+  "entity": {
+    "select": {
+      "operating_mode": {
+        "name": "Operating mode",
+        "state": {
+          "dhw_only": "DHW only",
+          "heating_and_dhw": "Heating and DHW",
+          "standby": "Standby"
+        }
+      },
+      "system_layout": {
+        "name": "00 · System layout",
+        "state": {
+          "heating": "Heating only",
+          "heating_and_cylinder": "Heating and cylinder"
+        }
+      },
+      "burner_control": {
+        "name": "01 · Burner and heating pump control",
+        "state": {
+          "thermostat_burner": "Thermostat controls burner, pump runs continuously",
+          "thermostat_burner_and_pump": "Thermostat controls burner and pump",
+          "external_burner": "External burner request"
+        }
+      },
+      "burner_type": {
+        "name": "02 · Burner type",
+        "state": {
+          "single_stage": "Single stage",
+          "two_stage": "Two stage"
+        }
+      },
+      "hysteresis": {
+        "name": "04 · Burner hysteresis",
+        "state": {
+          "standard": "Standard (4 K)",
+          "erb50": "ERB50 (6–12 K)",
+          "erb80": "ERB80 (6–20 K)"
+        }
+      },
+      "interval_ignition": {
+        "name": "28 · Periodic burner ignition",
+        "state": {
+          "disabled": "Disabled",
+          "every_five_hours": "Every 5 hours"
+        }
+      },
+      "dhw_algorithm": {
+        "name": "55 · Cylinder heating algorithm",
+        "state": {
+          "standard": "Standard",
+          "adaptive": "Adaptive"
+        }
+      },
+      "dhw_range": {
+        "name": "56 · DHW setpoint range",
+        "state": {
+          "standard_60": "10–60°C",
+          "extended_95": "10–95°C"
+        }
+      },
+      "cylinder_pump_start": {
+        "name": "61 · Cylinder pump start condition",
+        "state": {
+          "temperature_dependent": "Based on boiler temperature",
+          "immediate": "Immediately"
+        }
+      },
+      "extra_dhw_frequency": {
+        "name": "63 · Extra DHW heating frequency",
+        "state": {
+          "never": "Off",
+          "daily": "Daily",
+          "every_2_days": "Every 2 days",
+          "every_3_days": "Every 3 days",
+          "every_4_days": "Every 4 days",
+          "every_5_days": "Every 5 days",
+          "every_6_days": "Every 6 days",
+          "every_7_days": "Every 7 days",
+          "every_8_days": "Every 8 days",
+          "every_9_days": "Every 9 days",
+          "every_10_days": "Every 10 days",
+          "every_11_days": "Every 11 days",
+          "every_12_days": "Every 12 days",
+          "every_13_days": "Every 13 days",
+          "every_14_days": "Every 14 days",
+          "twice_daily": "Twice daily"
+        }
+      },
+      "temperature_display": {
+        "name": "88 · Panel temperature unit",
+        "state": {
+          "celsius": "Celsius",
+          "fahrenheit": "Fahrenheit"
+        }
+      },
+      "coding_display": {
+        "name": "8A · Coding display on the panel",
+        "state": {
+          "applicable": "Applicable installation codes",
+          "all_codes": "All codes"
+        }
+      },
+      "dhw_priority": {
+        "name": "A2 · DHW priority",
+        "state": {
+          "no_priority": "No priority",
+          "cylinder_priority": "Cylinder priority"
+        }
+      },
+      "summer_pump": {
+        "name": "F6 · Heating pump in summer mode",
+        "state": {
+          "off": "Off",
+          "cycles_1": "1 × 10 min per day",
+          "cycles_2": "2 × 10 min per day",
+          "cycles_3": "3 × 10 min per day",
+          "cycles_4": "4 × 10 min per day",
+          "cycles_5": "5 × 10 min per day",
+          "cycles_6": "6 × 10 min per day",
+          "cycles_7": "7 × 10 min per day",
+          "cycles_8": "8 × 10 min per day",
+          "cycles_9": "9 × 10 min per day",
+          "cycles_10": "10 × 10 min per day",
+          "cycles_11": "11 × 10 min per day",
+          "cycles_12": "12 × 10 min per day",
+          "cycles_13": "13 × 10 min per day",
+          "cycles_14": "14 × 10 min per day",
+          "cycles_15": "15 × 10 min per day",
+          "cycles_16": "16 × 10 min per day",
+          "cycles_17": "17 × 10 min per day",
+          "cycles_18": "18 × 10 min per day",
+          "cycles_19": "19 × 10 min per day",
+          "cycles_20": "20 × 10 min per day",
+          "cycles_21": "21 × 10 min per day",
+          "cycles_22": "22 × 10 min per day",
+          "cycles_23": "23 × 10 min per day",
+          "cycles_24": "24 × 10 min per day",
+          "continuous": "Continuous"
+        }
+      },
+      "standby_pump": {
+        "name": "F7 · Heating pump in standby",
+        "state": {
+          "off": "Off",
+          "cycles_1": "1 × 10 min per day",
+          "cycles_2": "2 × 10 min per day",
+          "cycles_3": "3 × 10 min per day",
+          "cycles_4": "4 × 10 min per day",
+          "cycles_5": "5 × 10 min per day",
+          "cycles_6": "6 × 10 min per day",
+          "cycles_7": "7 × 10 min per day",
+          "cycles_8": "8 × 10 min per day",
+          "cycles_9": "9 × 10 min per day",
+          "cycles_10": "10 × 10 min per day",
+          "cycles_11": "11 × 10 min per day",
+          "cycles_12": "12 × 10 min per day",
+          "cycles_13": "13 × 10 min per day",
+          "cycles_14": "14 × 10 min per day",
+          "cycles_15": "15 × 10 min per day",
+          "cycles_16": "16 × 10 min per day",
+          "cycles_17": "17 × 10 min per day",
+          "cycles_18": "18 × 10 min per day",
+          "cycles_19": "19 × 10 min per day",
+          "cycles_20": "20 × 10 min per day",
+          "cycles_21": "21 × 10 min per day",
+          "cycles_22": "22 × 10 min per day",
+          "cycles_23": "23 × 10 min per day",
+          "cycles_24": "24 × 10 min per day",
+          "continuous": "Continuous"
+        }
+      }
+    },
+    "number": {
+      "boiler_setpoint": {
+        "name": "Boiler temperature setpoint"
+      },
+      "dhw_setpoint": {
+        "name": "DHW temperature setpoint"
+      },
+      "boiler_limit": {
+        "name": "06 · Boiler temperature limit"
+      },
+      "heating_integral": {
+        "name": "10 · Second stage start integral for heating"
+      },
+      "cylinder_integral": {
+        "name": "11 · Second stage start integral for DHW"
+      },
+      "off_integral": {
+        "name": "12 · Burner shutdown integral"
+      },
+      "burner_motor_time": {
+        "name": "15 · Burner actuator run time"
+      },
+      "dhw_setpoint_2": {
+        "name": "58 · Secondary DHW setpoint"
+      },
+      "dhw_offset": {
+        "name": "60 · Boiler temperature offset for DHW"
+      },
+      "cylinder_pump_overrun": {
+        "name": "62 · Cylinder pump overrun"
+      },
+      "fault_delay": {
+        "name": "80 · Fault indication delay"
+      },
+      "heating_pump_overrun": {
+        "name": "F5 · Heating pump overrun"
+      }
+    },
+    "sensor": {
+      "fuel": {
+        "name": "03 · Fuel type",
+        "state": {
+          "gas": "Gas",
+          "oil": "Oil",
+          "undefined": "Undefined"
+        }
+      },
+      "cutoff_differential": {
+        "name": "13 · Burner cutoff differential"
+      },
+      "safety_module": {
+        "name": "92 · STB/M4 module",
+        "state": {
+          "absent": "Absent",
+          "installed": "Installed"
+        }
+      },
+      "boiler_temperature": {
+        "name": "Boiler water temperature"
+      },
+      "cylinder_temperature": {
+        "name": "DHW cylinder temperature"
+      },
+      "boiler_target": {
+        "name": "Effective boiler target"
+      },
+      "cylinder_target": {
+        "name": "Effective DHW target"
+      },
+      "dhw_phase": {
+        "name": "Cylinder heating state",
+        "state": {
+          "idle": "Idle",
+          "heating": "Heating",
+          "overrun": "Pump overrun"
+        }
+      },
+      "burner_starts": {
+        "name": "Burner starts"
+      },
+      "burner_hours": {
+        "name": "Burner operating time"
+      }
+    },
+    "binary_sensor": {
+      "burner": {
+        "name": "Burner stage 1"
+      },
+      "burner_stage_2": {
+        "name": "Burner stage 2"
+      },
+      "cylinder_pump": {
+        "name": "Cylinder pump output"
+      },
+      "heating_pump": {
+        "name": "Boiler heating pump output"
+      },
+      "thermostat_input": {
+        "name": "Room thermostat input"
+      },
+      "burner_fault": {
+        "name": "Burner fault"
+      }
+    }
+  }
+}

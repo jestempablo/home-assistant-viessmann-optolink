@@ -1,0 +1,306 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "Wybierz adapter Optolink lub wpisz jego pełną ścieżkę w /dev/serial/by-id/ albo /dev/serial/by-path/. Integracja odczyta identyfikator sterownika.",
+        "data": {
+          "port": "Port szeregowy Optolink"
+        }
+      },
+      "reconfigure": {
+        "description": "Wybierz adapter Optolink lub wpisz jego pełną ścieżkę w /dev/serial/by-id/ albo /dev/serial/by-path/. Integracja odczyta identyfikator sterownika.",
+        "data": {
+          "port": "Port szeregowy Optolink"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Brak odpowiedzi KW. Sprawdź ścieżkę adaptera, osadzenie głowicy i dostępność portu.",
+      "unsupported_controller": "Ten sterownik wymaga innej mapy rejestrów. Obsługiwana sygnatura to 20 91 00 01.",
+      "invalid_port": "Podaj pełną ścieżkę do urządzenia w /dev/serial/by-id/ albo /dev/serial/by-path/."
+    },
+    "abort": {
+      "already_configured": "Ten adapter jest już skonfigurowany.",
+      "single_instance_allowed": "Integracja ma już skonfigurowany sterownik.",
+      "reconfigure_successful": "Zaktualizowano port adaptera."
+    }
+  },
+  "entity": {
+    "select": {
+      "operating_mode": {
+        "name": "Tryb pracy",
+        "state": {
+          "dhw_only": "Tylko CWU",
+          "heating_and_dhw": "Ogrzewanie i CWU",
+          "standby": "Czuwanie"
+        }
+      },
+      "system_layout": {
+        "name": "00 · Schemat instalacji",
+        "state": {
+          "heating": "Tylko obieg grzewczy",
+          "heating_and_cylinder": "Obieg grzewczy z zasobnikiem"
+        }
+      },
+      "burner_control": {
+        "name": "01 · Sterowanie palnikiem i pompą CO",
+        "state": {
+          "thermostat_burner": "Termostat steruje palnikiem, pompa pracuje stale",
+          "thermostat_burner_and_pump": "Termostat steruje palnikiem i pompą",
+          "external_burner": "Zewnętrzne załączanie palnika"
+        }
+      },
+      "burner_type": {
+        "name": "02 · Typ palnika",
+        "state": {
+          "single_stage": "Jednostopniowy",
+          "two_stage": "Dwustopniowy"
+        }
+      },
+      "hysteresis": {
+        "name": "04 · Histereza palnika",
+        "state": {
+          "standard": "Standardowa (4 K)",
+          "erb50": "ERB50 (6–12 K)",
+          "erb80": "ERB80 (6–20 K)"
+        }
+      },
+      "interval_ignition": {
+        "name": "28 · Okresowy zapłon palnika",
+        "state": {
+          "disabled": "Wyłączony",
+          "every_five_hours": "Co 5 godzin"
+        }
+      },
+      "dhw_algorithm": {
+        "name": "55 · Regulacja ładowania zasobnika",
+        "state": {
+          "standard": "Standardowa",
+          "adaptive": "Adaptacyjna"
+        }
+      },
+      "dhw_range": {
+        "name": "56 · Zakres nastawy CWU",
+        "state": {
+          "standard_60": "10–60°C",
+          "extended_95": "10–95°C"
+        }
+      },
+      "cylinder_pump_start": {
+        "name": "61 · Warunek włączenia pompy ładującej CWU",
+        "state": {
+          "temperature_dependent": "Zależnie od temperatury kotła",
+          "immediate": "Natychmiast"
+        }
+      },
+      "extra_dhw_frequency": {
+        "name": "63 · Częstotliwość dodatkowego podgrzewania CWU",
+        "state": {
+          "never": "Wyłączone",
+          "daily": "Codziennie",
+          "every_2_days": "Co 2 dni",
+          "every_3_days": "Co 3 dni",
+          "every_4_days": "Co 4 dni",
+          "every_5_days": "Co 5 dni",
+          "every_6_days": "Co 6 dni",
+          "every_7_days": "Co 7 dni",
+          "every_8_days": "Co 8 dni",
+          "every_9_days": "Co 9 dni",
+          "every_10_days": "Co 10 dni",
+          "every_11_days": "Co 11 dni",
+          "every_12_days": "Co 12 dni",
+          "every_13_days": "Co 13 dni",
+          "every_14_days": "Co 14 dni",
+          "twice_daily": "Dwa razy dziennie"
+        }
+      },
+      "temperature_display": {
+        "name": "88 · Jednostka temperatury na panelu",
+        "state": {
+          "celsius": "Stopnie Celsjusza",
+          "fahrenheit": "Stopnie Fahrenheita"
+        }
+      },
+      "coding_display": {
+        "name": "8A · Kody serwisowe widoczne na panelu",
+        "state": {
+          "applicable": "Kody dla tej instalacji",
+          "all_codes": "Wszystkie kody"
+        }
+      },
+      "dhw_priority": {
+        "name": "A2 · Priorytet CWU",
+        "state": {
+          "no_priority": "Bez priorytetu",
+          "cylinder_priority": "Priorytet zasobnika"
+        }
+      },
+      "summer_pump": {
+        "name": "F6 · Pompa CO w trybie letnim",
+        "state": {
+          "off": "Wyłączona",
+          "cycles_1": "1 × 10 min na dobę",
+          "cycles_2": "2 × 10 min na dobę",
+          "cycles_3": "3 × 10 min na dobę",
+          "cycles_4": "4 × 10 min na dobę",
+          "cycles_5": "5 × 10 min na dobę",
+          "cycles_6": "6 × 10 min na dobę",
+          "cycles_7": "7 × 10 min na dobę",
+          "cycles_8": "8 × 10 min na dobę",
+          "cycles_9": "9 × 10 min na dobę",
+          "cycles_10": "10 × 10 min na dobę",
+          "cycles_11": "11 × 10 min na dobę",
+          "cycles_12": "12 × 10 min na dobę",
+          "cycles_13": "13 × 10 min na dobę",
+          "cycles_14": "14 × 10 min na dobę",
+          "cycles_15": "15 × 10 min na dobę",
+          "cycles_16": "16 × 10 min na dobę",
+          "cycles_17": "17 × 10 min na dobę",
+          "cycles_18": "18 × 10 min na dobę",
+          "cycles_19": "19 × 10 min na dobę",
+          "cycles_20": "20 × 10 min na dobę",
+          "cycles_21": "21 × 10 min na dobę",
+          "cycles_22": "22 × 10 min na dobę",
+          "cycles_23": "23 × 10 min na dobę",
+          "cycles_24": "24 × 10 min na dobę",
+          "continuous": "Praca ciągła"
+        }
+      },
+      "standby_pump": {
+        "name": "F7 · Pompa CO w trybie czuwania",
+        "state": {
+          "off": "Wyłączona",
+          "cycles_1": "1 × 10 min na dobę",
+          "cycles_2": "2 × 10 min na dobę",
+          "cycles_3": "3 × 10 min na dobę",
+          "cycles_4": "4 × 10 min na dobę",
+          "cycles_5": "5 × 10 min na dobę",
+          "cycles_6": "6 × 10 min na dobę",
+          "cycles_7": "7 × 10 min na dobę",
+          "cycles_8": "8 × 10 min na dobę",
+          "cycles_9": "9 × 10 min na dobę",
+          "cycles_10": "10 × 10 min na dobę",
+          "cycles_11": "11 × 10 min na dobę",
+          "cycles_12": "12 × 10 min na dobę",
+          "cycles_13": "13 × 10 min na dobę",
+          "cycles_14": "14 × 10 min na dobę",
+          "cycles_15": "15 × 10 min na dobę",
+          "cycles_16": "16 × 10 min na dobę",
+          "cycles_17": "17 × 10 min na dobę",
+          "cycles_18": "18 × 10 min na dobę",
+          "cycles_19": "19 × 10 min na dobę",
+          "cycles_20": "20 × 10 min na dobę",
+          "cycles_21": "21 × 10 min na dobę",
+          "cycles_22": "22 × 10 min na dobę",
+          "cycles_23": "23 × 10 min na dobę",
+          "cycles_24": "24 × 10 min na dobę",
+          "continuous": "Praca ciągła"
+        }
+      }
+    },
+    "number": {
+      "boiler_setpoint": {
+        "name": "Temperatura zadana kotła"
+      },
+      "dhw_setpoint": {
+        "name": "Temperatura zadana CWU"
+      },
+      "boiler_limit": {
+        "name": "06 · Ograniczenie temperatury kotła"
+      },
+      "heating_integral": {
+        "name": "10 · Całka załączenia drugiego stopnia dla CO"
+      },
+      "cylinder_integral": {
+        "name": "11 · Całka załączenia drugiego stopnia dla CWU"
+      },
+      "off_integral": {
+        "name": "12 · Całka wyłączenia stopnia palnika"
+      },
+      "burner_motor_time": {
+        "name": "15 · Czas pracy siłownika palnika"
+      },
+      "dhw_setpoint_2": {
+        "name": "58 · Druga temperatura zadana CWU"
+      },
+      "dhw_offset": {
+        "name": "60 · Nadwyżka temperatury kotła przy ładowaniu CWU"
+      },
+      "cylinder_pump_overrun": {
+        "name": "62 · Wybieg pompy ładującej CWU"
+      },
+      "fault_delay": {
+        "name": "80 · Opóźnienie sygnalizacji usterki"
+      },
+      "heating_pump_overrun": {
+        "name": "F5 · Wybieg pompy obiegu grzewczego"
+      }
+    },
+    "sensor": {
+      "fuel": {
+        "name": "03 · Rodzaj paliwa",
+        "state": {
+          "gas": "Gaz",
+          "oil": "Olej",
+          "undefined": "Nieokreślone"
+        }
+      },
+      "cutoff_differential": {
+        "name": "13 · Różnica temperatury wyłączenia"
+      },
+      "safety_module": {
+        "name": "92 · Moduł STB/M4",
+        "state": {
+          "absent": "Brak",
+          "installed": "Zainstalowany"
+        }
+      },
+      "boiler_temperature": {
+        "name": "Temperatura wody w kotle"
+      },
+      "cylinder_temperature": {
+        "name": "Temperatura w zasobniku CWU"
+      },
+      "boiler_target": {
+        "name": "Bieżący cel temperatury kotła"
+      },
+      "cylinder_target": {
+        "name": "Bieżący cel temperatury CWU"
+      },
+      "dhw_phase": {
+        "name": "Stan ładowania CWU",
+        "state": {
+          "idle": "Spoczynek",
+          "heating": "Ładowanie",
+          "overrun": "Wybieg pompy"
+        }
+      },
+      "burner_starts": {
+        "name": "Liczba startów palnika"
+      },
+      "burner_hours": {
+        "name": "Czas pracy palnika"
+      }
+    },
+    "binary_sensor": {
+      "burner": {
+        "name": "Palnik, pierwszy stopień"
+      },
+      "burner_stage_2": {
+        "name": "Palnik, drugi stopień"
+      },
+      "cylinder_pump": {
+        "name": "Wyjście pompy ładowania CWU"
+      },
+      "heating_pump": {
+        "name": "Wyjście pompy CO w kotle"
+      },
+      "thermostat_input": {
+        "name": "Wejście termostatu pokojowego"
+      },
+      "burner_fault": {
+        "name": "Usterka palnika"
+      }
+    }
+  }
+}

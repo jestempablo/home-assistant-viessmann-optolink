@@ -1,0 +1,15 @@
+{
+  "domain": "viessmann_optolink",
+  "name": "Viessmann Optolink",
+  "categories": ["climate.thermostats_heating"],
+  "codeowners": ["@jestempablo"],
+  "config_flow": true,
+  "connectivity": ["serial"],
+  "documentation": "https://github.com/jestempablo/home-assistant-viessmann-optolink",
+  "integration_type": "device",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/jestempablo/home-assistant-viessmann-optolink/issues",
+  "requirements": ["serialx>=1.11.0"],
+  "single_config_entry": true,
+  "version": "0.2.0"
+}

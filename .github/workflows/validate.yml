@@ -1,0 +1,50 @@
+name: Validate
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "21 6 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Home Assistant ${{ matrix.core }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        core: ["2026.10.0", "2026.11.1"]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+      - name: Install Home Assistant and the integration's serial library
+        env:
+          CORE_VERSION: ${{ matrix.core }}
+        run: |
+          python -m pip install "homeassistant==${CORE_VERSION}"
+          constraints=$(python -c "from pathlib import Path; import homeassistant; print(Path(homeassistant.__file__).with_name('package_constraints.txt'))")
+          python -m pip install -c "$constraints" 'serialx>=1.11.0'
+      - name: Test configuration, entities and KW protocol
+        run: python -m unittest discover -s tests -v
+
+  hacs:
+    name: HACS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: hacs/action@main
+        with:
+          category: integration
+
+  hassfest:
+    name: hassfest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: home-assistant/actions/hassfest@master
