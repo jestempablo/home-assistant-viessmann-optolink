@@ -15,6 +15,10 @@ Read a Viessmann Vitotronic 100 boiler controller over a local USB optical adapt
 
 The profile covers the controller outputs. For example, the heating pump entity reports the boiler's output terminal. A pump connected to an independent relay has its own state.
 
+## Cable and optical port
+
+Use a **USB-to-Optolink data cable with an infrared head**. The replacement cable for Vitoconnect OPTO is **Viessmann part 7856059**. Viessmann specifies a length of **3 m**. Plug the USB end into the machine running Home Assistant, or into the host that passes USB through to its VM. Seat the optical head over the window marked **V** on the Vitotronic front panel. The cable connects directly to Home Assistant and works without a Vitoconnect gateway or a ViCare account. [Viessmann cable specifications](https://www.viessmann.co.uk/en/products/control-system-and-connectivity/vitoconnect.html) · [Spare part 7856059](https://viessmanndirect.co.uk/Catalogue/Spares/Miscellaneous-Spares/Connecting-cable-USB-Optolink-7856059)
+
 ## Installation
 
 1. Open the badge above. In Home Assistant 2026.11 or later, you can also open **Settings → Marketplace → Add from link** and paste `https://github.com/jestempablo/home-assistant-viessmann-optolink`. Connect GitHub if prompted. In HACS on Home Assistant 2026.10, use **Custom repositories**, paste the same URL and choose **Integration**.
@@ -43,8 +47,16 @@ Changes to service coding affect boiler operation. Use the commissioning instruc
 ## Troubleshooting
 
 - **The adapter is missing.** Check that the USB device and its stable path are visible inside the Home Assistant OS guest or container. You can enter a path manually if the selector is empty.
-- **No KW response.** Verify the selected port and seat the head over the optical window. Stop any other service using the same adapter, such as `vcontrold`. A disconnected link makes the entities unavailable until polling succeeds again.
+- **The serial port is present, but there is no KW response.** Check that the optical head sits flush over the **V** window and that the selected path belongs to this adapter. Stop any other service using the same adapter, such as `vcontrold`.
 - **Unsupported controller.** The identity read at `0x00F8` must match the supported profile. For a compatibility request, include the controller model, its four-byte identity if known, and a reference for its register map.
 - **Only some entities are unavailable.** Check the system layout, burner stages and controller coding. Download the integration's diagnostics from the entry menu to see which registers are inapplicable or returned unsupported values at the last successful poll.
+
+### USB disconnects on Synology Virtual Machine Manager
+
+In one installation using a 5 m active USB extension, the NAS logged `port disabled by hub`. When the adapter reappeared, it had a new USB device number. The running Home Assistant VM still held the previous assignment, so the serial port was missing inside Home Assistant. Old assignments also occupied virtual USB slots. The cause of the initial disconnect remains undetermined. During an eight-minute test with the cable plugged directly into the NAS, the adapter kept the same USB device number.
+
+1. **Check the host.** If the NAS keeps losing the adapter, plug the Optolink cable directly into the NAS for a test, bypassing any extension or hub. This test works even with the optical head away from the boiler. Observe whether the adapter stays present.
+2. **Check the VM.** If the NAS sees the adapter and its serial path is missing inside Home Assistant, open **Virtual Machine Manager → Virtual Machine**, select the HA VM and choose **Action → Edit → Others → USB device**. Remove the stale entry for the Optolink adapter, save, then add the currently detected adapter to the same VM. Identify the adapter before changing an assignment so that other devices, such as a Zigbee radio, stay connected. [Synology VMM USB settings](https://kb.synology.com/en-global/DSM/help/Virtualization/virtual_machine?version=7)
+3. **Confirm a boiler reading.** Check that the original `/dev/serial/by-id/` or `/dev/serial/by-path/` path is visible in Home Assistant again. With the head on the boiler, wait for polling to resume (the normal interval is 30 seconds) and check for a fresh boiler or cylinder temperature. If the stable path changed, select the new one with **Reconfigure** on the existing entry.
 
 This independent community integration has no affiliation with Viessmann. The protocol and register references used for the V100KC2 profile are the [openv KW protocol](https://github.com/openv/openv/wiki/Protokoll-KW), the [openv device list](https://github.com/openv/openv/wiki/Ger%C3%A4te), the [ViessData data-point tables](https://github.com/philippoo66/ViessData21/blob/master/DP_Listen_2.zip) and the [V100KC2 data-point catalog](https://github.com/SoulSolistice/esphome_vitohome/blob/9592b32ddb17947d06dad5d5686090dab9316c7e/example/catalogs/en/v100kc2.yaml).
